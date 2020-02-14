@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_preco_bitcoin/services/bitcoinService.dart';
 import 'package:flutter_preco_bitcoin/telas/homeBloc.dart';
 
 class Home extends StatefulWidget {
@@ -7,6 +8,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Future<String> _recuperarBtcUSD() async {
+    return await BitcoinService.recuperarPreco("USD");
+  }
+
   @override
   Widget build(BuildContext context) {
     PrecoBitcoinBloc blocBtc = PrecoBitcoinBloc();
@@ -19,7 +24,9 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // Logotipo BTC
               Image.asset("images/bitcoin.png"),
+              // Recuperar preço BTC em R$ utilizando BLOC
               Padding(
                 padding: EdgeInsets.all(30),
                 child: StreamBuilder<String>(
@@ -30,20 +37,47 @@ class _HomeState extends State<Home> {
                       return Text('Erro');
                     } else {
                       return Text(
-                        '${snapshot.data}',
+                        'R\$ ${snapshot.data}',
                         style: Theme.of(context).textTheme.display1,
                       );
                     }
                   },
                 ),
               ),
+              // Recuperar preço BTC em $ utilizando Future
+              Padding(
+                padding: EdgeInsets.only(bottom: 30),
+                child: FutureBuilder<String>(
+                  future: _recuperarBtcUSD(),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        break;
+                      case ConnectionState.done:
+                        break;
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                        break;
+                      case ConnectionState.active:
+                        break;
+                    }
+                    return Text(
+                      "\$ ${snapshot.data}",
+                      style: Theme.of(context).textTheme.display1,
+                    );
+                  },
+                ),
+              ),
+              // Botão Atualizar
               RaisedButton(
-                onPressed: blocBtc.recuperarPreco,
+                onPressed: blocBtc.recuperarBtcBRL,
                 color: Colors.orangeAccent,
                 textColor: Colors.white,
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
                 child: Text(
-                  "Atualizar",
+                  "Atualizar BTC R\$",
                   style: TextStyle(fontSize: 20),
                 ),
               )
