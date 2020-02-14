@@ -1,4 +1,5 @@
 import 'package:flutter_preco_bitcoin/services/bitcoinService.dart';
+import 'package:flutter_preco_bitcoin/util/constantes.dart';
 import 'dart:async';
 
 class PrecoBitcoinBloc {
@@ -14,7 +15,8 @@ class PrecoBitcoinBloc {
 
   // Utiliza o método do bitcoinService para consultar o preço na API
   void recuperarBtcBRL() async {
-    _preco = await BitcoinService.recuperarPreco("BRL");
+    _preco = await BitcoinService.recuperarPreco(
+        BitcoinMoeda.BRL, BitcoinOferta.Buy);
     _blocController.sink.add(_preco);
   }
 

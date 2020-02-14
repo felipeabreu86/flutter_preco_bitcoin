@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_preco_bitcoin/services/bitcoinService.dart';
 import 'package:flutter_preco_bitcoin/telas/homeBloc.dart';
+import 'package:flutter_preco_bitcoin/util/constantes.dart';
 
 class Home extends StatefulWidget {
+  final PrecoBitcoinBloc blocBtc = PrecoBitcoinBloc();
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  /// Utiliza o método do bitcoinService para consultar o preço na API
   Future<String> _recuperarBtcUSD() async {
-    return await BitcoinService.recuperarPreco("USD");
+    return await BitcoinService.recuperarPreco(
+        BitcoinMoeda.USD, BitcoinOferta.Buy);
   }
 
   @override
   Widget build(BuildContext context) {
-    PrecoBitcoinBloc blocBtc = PrecoBitcoinBloc();
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        padding: EdgeInsets.all(32),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(30, 120, 30, 30),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,14 +32,14 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: EdgeInsets.all(30),
                 child: StreamBuilder<String>(
-                  stream: blocBtc.precoBitcoinStream,
+                  stream: widget.blocBtc.precoBitcoinStream,
                   initialData: "0.0",
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text('Erro');
                     } else {
                       return Text(
-                        'R\$ ${snapshot.data}',
+                        '${snapshot.data}',
                         style: Theme.of(context).textTheme.display1,
                       );
                     }
@@ -64,7 +66,7 @@ class _HomeState extends State<Home> {
                         break;
                     }
                     return Text(
-                      "\$ ${snapshot.data}",
+                      "${snapshot.data}",
                       style: Theme.of(context).textTheme.display1,
                     );
                   },
@@ -72,7 +74,7 @@ class _HomeState extends State<Home> {
               ),
               // Botão Atualizar
               RaisedButton(
-                onPressed: blocBtc.recuperarBtcBRL,
+                onPressed: widget.blocBtc.recuperarBtcBRL,
                 color: Colors.orangeAccent,
                 textColor: Colors.white,
                 padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
