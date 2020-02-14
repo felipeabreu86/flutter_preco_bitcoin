@@ -10,15 +10,14 @@ class BitcoinService {
     if (response.statusCode == 200) {
       try {
         Map<String, dynamic> retorno = json.decode(response.body);
-        var valores = retorno[moeda];
-        var precoOferta = valores[oferta];
-        var simbolo = valores["symbol"];
+        var itensMoeda = retorno[moeda];
+        var precoOferta = itensMoeda[oferta];
+        var simbolo = itensMoeda["symbol"];
         preco = "$simbolo $precoOferta";
       } catch (e) {
         print("Erro: " + e.toString());
       }
     }
-    print(preco);
     return preco;
   }
 }

@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
                 textColor: Colors.white,
                 padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
                 child: Text(
-                  "Atualizar BTC R\$",
+                  "Atualizar BTC (R\$)",
                   style: TextStyle(fontSize: 20),
                 ),
               )
