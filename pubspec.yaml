@@ -1,5 +1,5 @@
 name: flutter_preco_bitcoin
-description: A new Flutter project.
+description: A aplicação consiste em uma tela Home na qual o usuário poderá clicar no botão Atualizar e visualizar o preço atualizado do Bitcoin..
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
